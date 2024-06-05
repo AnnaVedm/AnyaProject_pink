@@ -1,20 +1,26 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
+using Avalonia.Media;
+using System.Collections.Generic;
 
 namespace AnyaProject
 {
     public partial class Redactirovanie : Window
     {
+        private List<Product> spisok1 = new List<Product>();
         private Product _tovar;
+        private ProductsWindow1 tovar1;
 
         public Redactirovanie()
         {
             InitializeComponent();
         }
 
-        public Redactirovanie(Product tovar)
+        public Redactirovanie(Product tovar, ProductsWindow1 pomogite, List<Product> spisok)
         {
+            spisok1 = spisok;
+            tovar1 = pomogite;
             _tovar = tovar;
             InitializeComponent();
             DataContext = tovar;
@@ -45,6 +51,22 @@ namespace AnyaProject
             }
 
             TadaText.Text = "“¿ - ƒ¿!";
+
+            //ƒŒ¡¿¬»À» Œ◊Ÿ≈Õ»≈ —œ»— ¿
+            tovar1.Tovarslistbox.Items.Clear();
+
+            foreach (var tovar in spisok1)
+            {
+                if (tovar.Stock == 0)
+                {
+                    tovar.change_color = new SolidColorBrush(Colors.Gray);
+                }
+                else
+                {
+                    tovar.change_color = new SolidColorBrush(Colors.White);
+                }
+                tovar1.Tovarslistbox.Items.Add(tovar);
+            }
         }
     }
 }

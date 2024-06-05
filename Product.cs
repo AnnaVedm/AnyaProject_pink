@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +23,7 @@ namespace AnyaProject
 
         public string TovarImage
         {
-            get { return _tovarImagePath;  }
+            get { return _tovarImagePath; }
             set
             {
                 if (_tovarImagePath != value)
@@ -111,6 +112,14 @@ namespace AnyaProject
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public SolidColorBrush change_color
+        {
+            get; set;
+        }
+
+        //определяем видимость товара в соответствии с выбранным item в combobox
+        public bool tovarsVisibility { get; set; } = true;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

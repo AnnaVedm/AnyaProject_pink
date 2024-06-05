@@ -1,13 +1,16 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using NAudio.Wave;
+using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Media;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace AnyaProject
@@ -18,6 +21,7 @@ namespace AnyaProject
         private User queenUser;
 
         public List<Product> tovars = new List<Product>() { }; //список товаров
+        public List<string> ItemsList { get; set; } = new List<string> {};
 
         public ProductsWindow1()
         {
@@ -30,9 +34,25 @@ namespace AnyaProject
             queenUser = QueenUser;
             tovars = Tovars;
 
+            //tovars.Add(
+            //   new Product()
+            //   {
+            //       TovarName = "Товар",
+            //       Manufacturer = "РОЛПОЛ",
+            //       Description = "Я самая пиздатая блять поняли блять. Слободская это центр мира блять понятно блять все дороги ведут к слободской. ДЯНА ТЫ АХУЕЛА БЛЯТЬ ПОШЛА ВОН БЛЯТЬ",
+            //       Price = 482492,
+            //       Stock = 10
+            //   });
+
             InitializeComponent();
 
+
             DataContext = this;
+
+            //foreach (var item in ItemsList)
+            //{
+            //    ProizvoditeliList.Items.Add(item);
+            //}
 
             Button dobavitTovar = this.FindControl<Button>("DobavitTovar");
             Button deleteVibrannoe = this.FindControl<Button>("DeleteVibrannoe");
@@ -50,15 +70,61 @@ namespace AnyaProject
 
             foreach (var tovar in tovars)
             {
+                if (tovar.Stock == 0)
+                {
+                    tovar.change_color = new SolidColorBrush(Colors.Gray);
+                }
+                else
+                {
+                    tovar.change_color = new SolidColorBrush(Colors.White);
+                }
                 Tovarslistbox.Items.Add(tovar);
             }
-
             this.Opened += UpdateWindow;
         }
 
+        //чтобы не передавать список в окно добавления товара, создаем Public метод, который будем запускать в окне Add
+        //public void UpdateItemsList(string proizvoditel)
+        //{
+        //    ItemsList.Add(proizvoditel);
+        //}
+
+        //private void SortProizvoditel(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (ProizvoditeliList == null || ProizvoditeliList.SelectedItem == null)
+        //    {
+        //        return; // Выход из метода, если ничего не выбрано или ProizvoditeliList равен null
+        //    }
+
+        //    else
+        //    {
+        //        string selectedProizvoditel = (string)ProizvoditeliList.SelectedItem;
+
+        //        if (selectedProizvoditel == "Все производители")
+        //        {
+        //            return;
+        //        }
+
+        //        //нужно сделать так, чтобы те товары, которые нам не подходят, не были видимы
+        //        //значит нужно для stackpanel через binding установить видимость
+
+        //        else
+        //        {
+        //            foreach (var tovar in tovars)
+        //            {
+        //                if (!(tovar.Manufacturer == selectedProizvoditel))
+        //                {
+        //                    //если производитель не соответствует выбранному, то видимость товара устанавливаетсяя на false
+        //                    tovar.tovarsVisibility = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
         private void AddTovar_Button(object sender, RoutedEventArgs e)
         {
-            Add addtovar = new Add(queenUser, tovars);
+            Add addtovar = new Add(queenUser, tovars /*this*/);
             addtovar.Show();
             this.Close();
         }
@@ -164,7 +230,7 @@ namespace AnyaProject
 
             Product editTovar = (Product)edittovar.DataContext;
 
-            Redactirovanie tovar = new Redactirovanie(editTovar);
+            Redactirovanie tovar = new Redactirovanie(editTovar, this, tovars);
             tovar.Show();
         }
 

@@ -61,12 +61,14 @@
 				</Menu>
 
 				<!--Производители для сортировки-->
-				<ComboBox Margin="10 16 0 0"
+				<ComboBox Margin="10 16 0 0"	  
 						  CornerRadius="10"
 						  BorderBrush="White"
 						  BorderThickness="2"
-						  Name="ProizvoditeliList">
-					
+						  x:Name="ProizvoditeliList"
+						  SelectedIndex="0"
+						 >
+					<ComboBoxItem>Все производители</ComboBoxItem>
 				</ComboBox>
 			</StackPanel>
 			
@@ -81,44 +83,62 @@
 
 					<ListBox.ItemTemplate>
 						<DataTemplate>
-							<StackPanel Orientation="Vertical">
-								<StackPanel Orientation="Vertical">
-									
-									<StackPanel Orientation="Horizontal">
-										<TextBlock Text="Имя: " Margin="10 0 0 0" FontWeight="Bold"/>
-										<TextBlock Text="{Binding TovarName}" Width="70"
-												   TextWrapping="Wrap"/>
-									</StackPanel>
+							<!--Карточка товара-->
+							<StackPanel Orientation="Vertical"
+										x:Name="Kartochka_tovar"
+										Background="{Binding change_color}"
+										IsVisible="{Binding tovarsVisibility}">
+								<StackPanel
+								Orientation="Horizontal">
+									<Grid
+										ShowGridLines="True"
+										ColumnDefinitions="200,300,150">
+										<!--Изображение товара-->
+										
+										<StackPanel Grid.Column="0">
+											<TextBlock Text="Изображение"/>
+											<Image>
 
-									<StackPanel Orientation="Horizontal" Margin="10 0 0 0">
-										<TextBlock Text="Производитель: " FontWeight="Bold"/>
-										<TextBlock Text="{Binding Manufacturer}"
-												   TextWrapping="Wrap"/>
-									</StackPanel>
-
-									<StackPanel Orientation="Horizontal">
-										<TextBlock Text="Описание: " FontWeight="Bold"
-												   Margin="10 0 0 0"/>
-										<TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
-									</StackPanel>
-
-									<StackPanel Orientation="Horizontal" Margin="10 0 0 0">
-										<TextBlock Text="Стоимость: " FontWeight="Bold"/>
-										<TextBlock Text="{Binding Price}" Width="100"/>
-									</StackPanel>
-
-									<StackPanel Orientation="Horizontal" Margin="10 0 0 0">
-										<TextBlock Text="На складе: " FontWeight="Bold"/>
-										<TextBlock Text="{Binding Stock}" TextWrapping="Wrap"/>
-									</StackPanel>
-
-								</StackPanel>
-
-								<StackPanel Orientation="Vertical">
-									<TextBlock Text="Фото: " Margin="10 10 0 0" FontWeight="Bold"/>
-									<Image Name="img"
-										   HorizontalAlignment="Left"
-										   Source="{Binding TovarImage}"/>
+											</Image>
+										</StackPanel>
+										
+										<StackPanel Grid.Column="1"
+											Orientation="Vertical">
+											<StackPanel
+												Orientation="Vertical">
+												<!--Название товара через привязку-->
+												<TextBlock
+													Text="{Binding TovarName}"
+													FontWeight="ExtraBold"/>
+												<TextBlock 
+													Text="{Binding Description}"
+													TextWrapping="Wrap"/>
+											</StackPanel>
+											<StackPanel
+												Orientation="Horizontal">
+												<TextBlock
+													Text="Производитель: "/>
+												<TextBlock
+													Text="{Binding Manufacturer}"/>
+											</StackPanel>
+											<StackPanel
+												Orientation="Horizontal">
+												<TextBlock
+													Text="Стоимость: "/>
+												<TextBlock
+													Text="{Binding Price}"/>
+											</StackPanel>
+										</StackPanel>
+										<StackPanel
+											Orientation="Vertical"
+											Grid.Column="2">
+											<TextBlock
+												Text="Наличие на складе: "/>
+											<TextBlock
+												Text="{Binding Stock}"
+												HorizontalAlignment="Center"/>
+										</StackPanel>
+									</Grid>
 								</StackPanel>
 
 								<StackPanel Orientation="Horizontal">
@@ -136,7 +156,6 @@
 											CornerRadius="20"
 											Foreground="White"/>
 								</StackPanel>
-
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>

@@ -55,6 +55,7 @@
 					   Margin="10 0 0 0"
 					   VerticalAlignment="Center"/>
 			<TextBox Width="210"
+					 Watermark="{Binding TovarName}"
 					 Name="TovarName"
 					 Height="30"
 					 CornerRadius="10"/>
@@ -68,6 +69,7 @@
 						Margin="10 0 0 0"
 						VerticalAlignment="Center"/>
 			<TextBox Width="210"
+					 Watermark="{Binding Manufacturer}"
 					 Name="TovarProizvoditel"
 					 Height="30"
 					 CornerRadius="10"/>
@@ -81,13 +83,29 @@
 						   Margin="10 0 0 0"
 						   VerticalAlignment="Center"/>
 				<TextBox Width="210"
+						 Watermark="{Binding Description}"
 						 Height="30"
 						 Name="TovarOpisanie"
 						 CornerRadius="10"
 						 Margin="48 0 0 0"/>
 			</StackPanel>
-		
+			
 			<StackPanel Grid.Row="4" Grid.Column="1"
+						Orientation="Horizontal">
+				<TextBlock Text="Стоимость: "
+						   Classes="TaDaa"
+						   FontSize="18"
+						   Margin="10 0 0 0"
+						   VerticalAlignment="Center"/>
+				<TextBox Width="210"
+						 Watermark="{Binding Price}"
+						 Height="30"
+						 Name="TovarPrice"
+						 CornerRadius="10"
+						 Margin="40 0 0 0"/>
+			</StackPanel>
+			
+			<StackPanel Grid.Row="5" Grid.Column="1"
 						Orientation="Horizontal">
 				<TextBlock Text="Остаток: "
 						   Classes="TaDaa"
@@ -96,23 +114,10 @@
 						   VerticalAlignment="Center"/>
 				<TextBox Width="210"
 						 Height="30"
+						 Watermark="{Binding Stock}"
 						 Name="TovarOstatok"
 						 CornerRadius="10"
 						 Margin="65 0 0 0"/>
-			</StackPanel>
-		
-			<StackPanel Grid.Row="5" Grid.Column="1"
-						Orientation="Horizontal">
-				<TextBlock Text="Стоимость: "
-						   Classes="TaDaa"
-						   FontSize="18"
-						   Margin="10 0 0 0"
-						   VerticalAlignment="Center"/>
-				<TextBox Width="210"
-						 Height="30"
-						 Name="TovarPrice"
-						 CornerRadius="10"
-						 Margin="40 0 0 0"/>
 			</StackPanel>
 			
 			<TextBlock Text=""
