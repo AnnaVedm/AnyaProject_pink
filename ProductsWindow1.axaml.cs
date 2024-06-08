@@ -178,6 +178,7 @@ namespace AnyaProject
                 UpdateListWithSearchAndSort(searchText, selectedManufacturer, ProductsList);
             }
         }
+        
 
         private void AddTovar_Button(object sender, RoutedEventArgs e)
         {

@@ -35,10 +35,13 @@
 			<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
 				<TextBlock Name="queenName"
 						   Foreground="White"
-						   HorizontalAlignment="Left"/>
+						   HorizontalAlignment="Left"
+						   Margin = "0 20 0 0"
+						   FontWeight="ExtraBold"/>
 				<TextBlock Name="queenStatus"
 						   Foreground="White"
-						   Margin="20 0 0 0"/>
+						   FontWeight="ExtraBold"
+						   Margin="20 20 0 0"/>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal"
