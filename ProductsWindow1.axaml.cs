@@ -195,24 +195,28 @@ namespace AnyaProject
         {
             List<Product> SortedList = ProductsList.OrderByDescending(item => item.Price).ToList();
             UpdateListBox(SortedList);
+            UpdateListWithSearchAndSort(Search.Text.ToLower(), SortedList);
         }
 
         private void PriceVozrastanie(object sender, RoutedEventArgs e)
         {
             List<Product> SortedList = ProductsList.OrderBy(item => item.Price).ToList();
             UpdateListBox(SortedList);
+            UpdateListWithSearchAndSort(Search.Text.ToLower(), SortedList);
         }
 
         private void ProizvoditelAlfavit(object sender, RoutedEventArgs e)
         {
             List<Product> SortedList = ProductsList.OrderBy(item => item.Manufacturer).ToList();
             UpdateListBox(SortedList);
+            UpdateListWithSearchAndSort(Search.Text.ToLower(), SortedList);
         }
 
         private void ProizvoditelObratno(object sender, RoutedEventArgs e)
         {
             List<Product> SortedList = ProductsList.OrderByDescending(item => item.Manufacturer).ToList();
             UpdateListBox(SortedList);
+            UpdateListWithSearchAndSort(Search.Text.ToLower(), SortedList);
         }
 
         private void UpdateListBox(List<Product> ListToAdd) //Обновляем список товаров
@@ -251,7 +255,6 @@ namespace AnyaProject
             }
 
         }
-
         //Перейти в корзину
         private void PoitiKorzinu(object sender, RoutedEventArgs e)
         {
@@ -262,28 +265,26 @@ namespace AnyaProject
         {
             string searchText = Search.Text.ToLower(); // Получаем введенный текст и приводим его к нижнему регистру
 
-            // Разбиваем введенный текст на отдельные слова
-            string[] searchWords = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Вызываем метод обновления списка с учетом поиска и текущей сортировки
+            UpdateListWithSearchAndSort(searchText, ProductsList);
+        }
 
-            if (string.IsNullOrWhiteSpace(searchText)) // Проверяем, пуст ли TextBox
-            {
-                // Если TextBox пуст, отображаем все товары
-                UpdateListBox(ProductsList);
-            }
-            else
-            {
-                // В противном случае, выполняем поиск и отображаем отфильтрованные товары
-                searchWords = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                var filteredProducts = ProductsList.Where(product =>
+        private void UpdateListWithSearchAndSort(string searchText, List<Product> sortedList)
+        {
+            string[] searchWords;
+            searchWords = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Применяем поиск к списку товаров
+            var filteredProducts = sortedList.Where(product =>
+                string.IsNullOrWhiteSpace(searchText) || // Если поле поиска пустое, не применяем фильтрацию
                     searchWords.Any(word =>
-                        product.TovarName.ToLower().Contains(word) ||
-                        product.Manufacturer.ToLower().Contains(word) ||
-                        product.Description.ToLower().Contains(word)
-                    )
-                ).ToList();
-                filteredProducts = filteredProducts.Distinct().ToList();
-                UpdateListBox(filteredProducts);
-            }
+                    product.TovarName.ToLower().Contains(word) ||
+                    product.Manufacturer.ToLower().Contains(word) ||
+                    product.Description.ToLower().Contains(word)
+                )
+            ).ToList();
+
+            // Обновляем ListBox с учетом отфильтрованных товаров
+            UpdateListBox(filteredProducts);
         }
     }
 }
