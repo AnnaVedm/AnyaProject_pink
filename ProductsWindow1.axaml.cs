@@ -17,229 +17,241 @@ namespace AnyaProject
 {
     public partial class ProductsWindow1 : Window
     {
-        //private Border collapsiblePanel;
-        private User queenUser;
+        private User _currentUser;
 
-        public List<Product> tovars = new List<Product>() { }; //список товаров
-        public List<string> ItemsList { get; set; } = new List<string> {};
+        //список продуктов, который мы будем потом передавать в другой список
+        public static List<Product> ProductsList = new List<Product> { };
+
+        //список товаров, которые в корзине
+        //public List<Product> ProductToBasket = new List<Product>() { };
 
         public ProductsWindow1()
         {
             InitializeComponent();
+
+            //Установка контекста данных окна на текущий объект
             DataContext = this;
         }
 
-        public ProductsWindow1(User QueenUser, List<Product> Tovars)
+        public ProductsWindow1(User currentUser, List<Product> productslist)
         {
-            queenUser = QueenUser;
-            tovars = Tovars;
-
-            //tovars.Add(
-            //   new Product()
-            //   {
-            //       TovarName = "Товар",
-            //       Manufacturer = "РОЛПОЛ",
-            //       Description = "Я самая пиздатая блять поняли блять. Слободская это центр мира блять понятно блять все дороги ведут к слободской. ДЯНА ТЫ АХУЕЛА БЛЯТЬ ПОШЛА ВОН БЛЯТЬ",
-            //       Price = 482492,
-            //       Stock = 10
-            //   });
-
-            InitializeComponent();
-
+            ProductsList = productslist;
 
             DataContext = this;
+            _currentUser = currentUser; // Инициализация _currentUser
+            InitializeComponent(); // Инициализация компонентов
 
-            //foreach (var item in ItemsList)
-            //{
-            //    ProizvoditeliList.Items.Add(item);
-            //}
+            queenStatus.Text = "Статус: " + _currentUser.UserStatus;
+            queenName.Text = "Имя: " + _currentUser.UserName;
 
-            Button dobavitTovar = this.FindControl<Button>("DobavitTovar");
-            Button deleteVibrannoe = this.FindControl<Button>("DeleteVibrannoe");
+            ProductsList.Add(
+               new Product()
+               {
+                   TovarName = "Samsung Galaxy A72",
+                   Manufacturer = "Samsung",
+                   Description = "Безграничный экран AMOLED 6.7', 256ГБ, Черный",
+                   Stock = 34,
+                   Price = 33990
+               });
 
-            if (queenUser.UserStatus == "Queen")
+            ProductsList.Add(
+               new Product()
+               {
+                   TovarName = "Poco F5 Pro",
+                   Manufacturer = "Xiaomi",
+                   Description = "256/8ГБ, Белый, AMOLED FHD+, 6.67', 2G/3G/4G (LTE)/5G",
+                   Stock = 34,
+                   Price = 33990
+               });
+
+            ProductsList.Add(
+               new Product()
+               {
+                   TovarName = "ITEL A70",
+                   Manufacturer = "ATEL",
+                   Description = "IPS, 6.6' (1612x720), Unisoc T603, 2G/3G/4G (LTE)",
+                   Stock = 34,
+                   Price = 33990
+               });
+
+            //задаем видимость кнопок Редактировать и Удалить для каждого товара в зависимости от статуса
+            foreach (var product in ProductsList)
             {
-                dobavitTovar.IsVisible = true;
-                //deleteVibrannoe.IsVisible = true;
+                product.Otobrazhenie = _currentUser.UserStatus == "Queen";
+            }
+
+            //-------------------------------------------
+            foreach (var product in ProductsList) //добавляем все товары из списка в Listbox
+            {
+                if (product.Stock == 0)
+                {
+                    Color customColor = Color.FromRgb(102, 98, 103);
+                    SolidColorBrush brush = new SolidColorBrush(customColor);
+                    product.change_color = brush;
+                }
+
+                Tovarslistbox.Items.Add(product);
+            }
+
+            //-------------------------------------------
+
+            // Добавляем элемент в список
+            Button addProductButton = this.FindControl<Button>("DobavitTovar");
+            if (_currentUser.UserStatus != "Queen")
+            {
+                addProductButton.IsVisible = false;
+            }
+
+            else if (_currentUser.UserStatus == "гость")
+            {
+                queenName.Text = "";
             }
             else
             {
-                dobavitTovar.IsVisible = false;
-                //deleteVibrannoe.IsVisible = false;
-            }
-
-            foreach (var tovar in tovars)
-            {
-                if (tovar.Stock == 0)
-                {
-                    tovar.change_color = new SolidColorBrush(Colors.Gray);
-                }
-                else
-                {
-                    tovar.change_color = new SolidColorBrush(Colors.White);
-                }
-                Tovarslistbox.Items.Add(tovar);
-            }
-            this.Opened += UpdateWindow;
-        }
-
-        //чтобы не передавать список в окно добавления товара, создаем Public метод, который будем запускать в окне Add
-        //public void UpdateItemsList(string proizvoditel)
-        //{
-        //    ItemsList.Add(proizvoditel);
-        //}
-
-        //private void SortProizvoditel(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (ProizvoditeliList == null || ProizvoditeliList.SelectedItem == null)
-        //    {
-        //        return; // Выход из метода, если ничего не выбрано или ProizvoditeliList равен null
-        //    }
-
-        //    else
-        //    {
-        //        string selectedProizvoditel = (string)ProizvoditeliList.SelectedItem;
-
-        //        if (selectedProizvoditel == "Все производители")
-        //        {
-        //            return;
-        //        }
-
-        //        //нужно сделать так, чтобы те товары, которые нам не подходят, не были видимы
-        //        //значит нужно для stackpanel через binding установить видимость
-
-        //        else
-        //        {
-        //            foreach (var tovar in tovars)
-        //            {
-        //                if (!(tovar.Manufacturer == selectedProizvoditel))
-        //                {
-        //                    //если производитель не соответствует выбранному, то видимость товара устанавливаетсяя на false
-        //                    tovar.tovarsVisibility = false;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        private void AddTovar_Button(object sender, RoutedEventArgs e)
-        {
-            Add addtovar = new Add(queenUser, tovars /*this*/);
-            addtovar.Show();
-            this.Close();
-        }
-
-        private void PriceVozrastanie(object sender, RoutedEventArgs e)
-        {
-            var tovars2 = tovars.OrderBy(item => item.Price).ToList();
-
-            Tovarslistbox.Items.Clear();
-
-            foreach (var tovar in tovars2)
-            {
-                Tovarslistbox.Items.Add(tovar);
+                addProductButton.IsVisible = true;
             }
         }
 
-        private void ProizvoditelAlfavit(object sender, RoutedEventArgs e)
-        {
-            var tovars2 = tovars.OrderBy(item => item.Manufacturer).ToList();
-
-            Tovarslistbox.Items.Clear();
-
-            foreach (var tovar in tovars2)
-            {
-                Tovarslistbox.Items.Add(tovar);
-            }
-        }
-
-        private void ProizvoditelObratno(object  sender, RoutedEventArgs e)
-        {
-            var tovars2 = tovars.OrderByDescending(item => item.Manufacturer).ToList();
-
-            Tovarslistbox.Items.Clear();
-
-            foreach (var tovar in tovars2)
-            {
-                Tovarslistbox.Items.Add(tovar);
-            }
-        }
-
-        private void PriceUbivanie(object sender, RoutedEventArgs e)
-        {
-            var tovars2 = tovars.OrderByDescending(item => item.Price).ToList();
-
-            Tovarslistbox.Items.Clear();
-
-            foreach (var tovar in tovars2)
-            {
-                Tovarslistbox.Items.Add(tovar);
-            }
-        }
-
-        private void UpdateWindow(object? sender, EventArgs e)
-        {
-            // Установка значения свойства IsAdmin для каждого элемента в ProductsList
-            foreach (var product in tovars)
-            {
-                product.Otobrazhenie = queenUser.UserStatus == "Queen";
-            }
-        }
-
-        public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>()
-        {
-            new User()
-            {
-                UserName = "Отсутствует",
-                UserPassword = "",
-                UserStatus = "Гость"
-            },
-
-            new User()
-            {
-                UserName = "AnnaVedm",
-                UserPassword = "1234",
-                UserStatus = "Queen"
-            },
-
-            new User()
-            {
-                UserName = "Anna",
-                UserPassword = "1234",
-                UserStatus = "Thief"
-            }
-        };
-
+        //удалить товар
         private void DeleteTovar_Button(object sender, RoutedEventArgs e)
         {
-            //получаем кнопку на которую нажали
-            Button deletetovar = (Button)sender;
+            // Получаем кнопку, на которую было нажатие
+            Button deleteButton = (Button)sender;
 
-            //получаем все данные принадлежащие этой кнопке
-            Product tovar2 = (Product)deletetovar.DataContext;
+            // Получаем контекст данных этой кнопки (т.е. элемент Products, к которому привязана кнопка)
+            Product product = (Product)deleteButton.DataContext;
 
-            //удаляем
-            tovars.Remove(tovar2);
-            Tovarslistbox.Items.Remove(tovar2);
+            //если удаляемый товар есть в корзине, То выводим сообщение 
+            if (_currentUser.Products.Contains(product))
+            {
+                Message message = new Message();
+
+                message.oshibka1.Text = "Вы не можете удалить товар, ";
+
+                message.Show();
+            }
+            else
+            {
+                //если нет в корзине, То удаляем из списка товаров
+                ProductsList.Remove(product);
+                Tovarslistbox.Items.Remove(product);
+            }
         }
 
-
+        //отредактировать товар
         public void RedactButton(object sender, RoutedEventArgs e)
         {
             Button edittovar = (Button)sender;
 
             Product editTovar = (Product)edittovar.DataContext;
 
-            Redactirovanie tovar = new Redactirovanie(editTovar, this, tovars);
+            Redactirovanie tovar = new Redactirovanie(editTovar, this, ProductsList);
             tovar.Show();
         }
 
-        private async void Exit_ButtonClick(object sender, RoutedEventArgs e) //кнопка перехода обратно на окно авторизации
+        //это запускаем в окне AddProduct, чтобы прямо в этот список добавить товар
+        public void UpdateProductsList(Product newProduct)
         {
-            MainWindow window = new MainWindow(tovars);
-            
-            window.Show();
+            ProductsList.Add(newProduct);
+            newProduct.Otobrazhenie = _currentUser.UserStatus == "Queen";
+
+            if (newProduct.Stock == 0)
+            {
+                Color customColor = Color.FromRgb(102, 98, 103);
+                SolidColorBrush brush = new SolidColorBrush(customColor);
+                newProduct.change_color = brush;
+            }
+            else
+            {
+                SolidColorBrush brush = new SolidColorBrush(Colors.Transparent);
+                newProduct.change_color = brush;
+            }
+            Tovarslistbox.Items.Add(newProduct);
+        }
+
+        //добавляем товар в наш список
+        private void AddTovar_Button(object sender, RoutedEventArgs e)
+        {
+            // Передаем ссылку на исходный список товаров в окно добавления товара
+            Add ap = new Add(this);
+            ap.Show();
+        }
+
+        //возвращаемся на окно авторизации
+        private void Exit_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            MainWindow auth = new MainWindow(ProductsList);
+            auth.Show();
+
             this.Close();
+        }
+
+        private void PriceUbivanie(object sender, RoutedEventArgs e)
+        {
+            List<Product> SortedList = ProductsList.OrderByDescending(item => item.Price).ToList();
+            UpdateListBox(SortedList);
+        }
+
+        private void PriceVozrastanie(object sender, RoutedEventArgs e)
+        {
+            List<Product> SortedList = ProductsList.OrderBy(item => item.Price).ToList();
+            UpdateListBox(SortedList);
+        }
+
+        private void ProizvoditelAlfavit(object sender, RoutedEventArgs e)
+        {
+            List<Product> SortedList = ProductsList.OrderBy(item => item.Manufacturer).ToList();
+            UpdateListBox(SortedList);
+        }
+
+        private void ProizvoditelObratno(object sender, RoutedEventArgs e)
+        {
+            List<Product> SortedList = ProductsList.OrderByDescending(item => item.Manufacturer).ToList();
+            UpdateListBox(SortedList);
+        }
+
+        private void UpdateListBox(List<Product> ListToAdd) //Обновляем список товаров
+        {
+            Tovarslistbox.Items.Clear();
+
+            foreach (var item in ListToAdd)
+            {
+                Tovarslistbox.Items.Add(item);
+            }
+        }
+
+        private void DobavitKorzinu(object sender, RoutedEventArgs e)
+        {
+            // Получаем кнопку, на которую было нажатие
+            Button addtobasket = (Button)sender;
+
+            // Получаем контекст данных этой кнопки (т.е. элемент Products, к которому привязана кнопка)
+            Product product = (Product)addtobasket.DataContext;
+
+            //проверка на добавление 
+            if (product.Stock == 0)
+            {
+                Message message = new Message();
+                message.oshibka1.Text = "Вы не можете добавить в корзину товар,";
+
+                message.Show();
+            }
+
+            else
+            {
+                _currentUser.Products.Add(product);
+
+                //Korzina basket = new Korzina(_currentUser);
+                //basket.Show();
+            }
+
+        }
+
+        //Перейти в корзину
+        private void PoitiKorzinu(object sender, RoutedEventArgs e)
+        {
+            Korzina basket = new Korzina(_currentUser);
+            basket.Show();
         }
     }
 }

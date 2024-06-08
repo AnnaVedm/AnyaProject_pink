@@ -10,8 +10,9 @@ namespace AnyaProject
 {
     public partial class Add : Window
     {
-        public List<Product> tovars2 = new List<Product>();
-        private User _user;
+        //private List<Product> korzinka = new List<Product>();
+        //public List<Product> tovars2 = new List<Product>();
+        //private User _user;
         private ProductsWindow1 _listupdate;
 
         public Add()
@@ -19,19 +20,16 @@ namespace AnyaProject
             InitializeComponent();
         }
 
-        public Add(User user, List<Product> Tovars /*ProductsWindow1 forupdate*/)
+        public Add(ProductsWindow1 forupdate)
         {
             InitializeComponent();
-            DataContext = this;
-
-            //_listupdate = forupdate;
-            _user = user;
-            tovars2 = Tovars;
+            _listupdate = forupdate;
+            //_user = user;
+            //tovars2 = Tovars;
         }
 
         private void DobavitTovar_Button(object sender, RoutedEventArgs e)
         {
-
             Product product = new Product()
             {
                 TovarName = TovarName.Text,
@@ -41,21 +39,16 @@ namespace AnyaProject
                 Stock = Convert.ToInt32(TovarOstatok.Text)
             };
 
-            tovars2.Add(product);
-
-            //_listupdate.Tovarslistbox.Items.Clear();
-
-            //foreach (var tovar in tovars2)
-            //{
-            //    _listupdate.Tovarslistbox.Items.Add(tovar);
-            //}
+            //tovars2.Add(product);
 
             ////при добавлении товара запсукаем метод updateItemsList и передаем туда добавленного производителя
             //_listupdate.UpdateItemsList(product.Manufacturer);
 
 
-            ProductsWindow1 productsWindow1 = new ProductsWindow1(_user, tovars2);
-            productsWindow1.Show();
+
+            _listupdate.UpdateProductsList(product);
+            //ProductsWindow1 productsWindow1 = new ProductsWindow1(_user, tovars2);
+            //productsWindow1.Show();
 
             this.Close();
         }

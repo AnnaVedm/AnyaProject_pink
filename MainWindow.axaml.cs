@@ -19,7 +19,32 @@ namespace AnyaProject
     {
         private List<Product> Tovars1 = new List<Product>();
 
-        User user = new User();
+        public ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>()
+        {
+            new User()
+            {
+                UserName = "Отсутствует",
+                UserPassword = "",
+                UserStatus = "Гость"
+            },
+
+            new User()
+            {
+                UserName = "AnnaVedm",
+                UserPassword = "1234",
+                UserStatus = "Queen"
+            },
+
+            new User()
+            {
+                UserName = "Anna",
+                UserPassword = "1234",
+                UserStatus = "Thief"
+            }
+        };
+
+        //User user = new User();
+        //private User _user;
 
         public MainWindow()
         {
@@ -29,17 +54,19 @@ namespace AnyaProject
         public MainWindow(List<Product> tovars)
         {
             Tovars1 = tovars;
+            //_user = user;
             InitializeComponent();
             DataContext = this;
         }
 
-        private async void VoitiVAkkaynt(object sender, RoutedEventArgs e)
+        private void VoitiVAkkaynt(object sender, RoutedEventArgs e)
         {
-            ProductsWindow1 w = new ProductsWindow1();
-
             if (!string.IsNullOrWhiteSpace(Name.Text)) //Если строка непустая, то проверяем наш список на наличие этих полей
             {
-                User proverka = w.Users.FirstOrDefault(u => u.UserName == Name.Text && u.UserPassword == Password.Text);
+                string login = Name.Text;
+                string password = Password.Text;
+
+                User proverka = Users.FirstOrDefault(u => u.UserName == login && u.UserPassword == password);
 
                 if (proverka != null)
                 {
@@ -49,8 +76,7 @@ namespace AnyaProject
                     ProductsWindow1 wp = new ProductsWindow1(proverka, Tovars1);
                     wp.Show();
 
-                    this.Close();
-                    
+                    this.Close();            
                 }
                 else
                 {
@@ -64,7 +90,7 @@ namespace AnyaProject
         private void Guest_Button(object sender, RoutedEventArgs e)
         {
             //для получения доступа к списку пользователей
-            ProductsWindow1 q = new ProductsWindow1();
+            MainWindow q = new MainWindow();
 
             //для входа в режим гостя выбираем пользователя под нулевым индексом - со статусом гость и без пароля
             ProductsWindow1 open_okno = new ProductsWindow1(q.Users[0], Tovars1);

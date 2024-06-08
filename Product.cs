@@ -33,7 +33,6 @@ namespace AnyaProject
                 }
             }
         }
-
         public bool Otobrazhenie
         {
             get { return otobrazhenie; }
@@ -97,7 +96,6 @@ namespace AnyaProject
                 }
             }
         }
-
         public int Stock
         {
             get { return _stock; }

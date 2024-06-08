@@ -32,10 +32,10 @@
 			</Grid.ColumnDefinitions>
 
 			<!-- Поля: Имя пользователя и Статус -->
-			<StackPanel>
-				<TextBlock Text="{Binding UserName}" Grid.Row="0" Grid.Column="1"
+			<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+				<TextBlock Name="queenName"
 						   HorizontalAlignment="Left"/>
-				<TextBlock Text="{Binding UserStatus}" Grid.Row="0" Grid.Column="1"
+				<TextBlock Name="queenStatus"
 						   HorizontalAlignment="Right"/>
 			</StackPanel>
 
@@ -59,7 +59,6 @@
 								  Click="ProizvoditelObratno"/>
 					</MenuItem>
 				</Menu>
-
 				<!--Производители для сортировки-->
 				<ComboBox Margin="10 16 0 0"	  
 						  CornerRadius="10"
@@ -67,7 +66,8 @@
 						  BorderThickness="2"
 						  x:Name="ProizvoditeliList"
 						  SelectedIndex="0"
-						 >
+						  
+						  ItemsSource="{Binding ItemsList}">
 					<ComboBoxItem>Все производители</ComboBoxItem>
 				</ComboBox>
 			</StackPanel>
@@ -142,18 +142,26 @@
 								</StackPanel>
 
 								<StackPanel Orientation="Horizontal">
-									<Button Content="Редактировать" Margin="0 10 10 0"
+									<Button Content="Редактировать" 
+											Margin="0 10 10 0"
 											IsVisible="{Binding Otobrazhenie}"
 											Click="RedactButton"
 											Background="#f7004d"
 											CornerRadius="21"
 											Foreground="White"/>
-
-									<Button Content="Удалить" Margin="0 10 10 0"
+									<Button Content="Удалить" 
+											Margin="0 10 10 0"
 											Background="#f7004d"
 											Click="DeleteTovar_Button"
 											IsVisible="{Binding Otobrazhenie}"
 											CornerRadius="20"
+											Foreground="White"/>
+									<Button Content="Добавить в корзину"
+											Click="DobavitKorzinu"
+											Margin="0 10 10 0"
+											Background="#f7004d"
+											CornerRadius="20"
+											IsVisible="{Binding Otobrazhenie}"
 											Foreground="White"/>
 								</StackPanel>
 							</StackPanel>
@@ -174,7 +182,15 @@
 						CornerRadius="20"
 						IsVisible="True"
 						Foreground="#f7004d"/>
-
+				
+				<Button Content="Перейти в корзину"
+						Click="PoitiKorzinu"
+						FontSize="20"
+						Margin="10 0 0 0"
+						Background="White"
+						CornerRadius="20"
+						IsVisible="True"
+						Foreground="#f7004d"/>
 				<!-- <Button Content="Удалить выбранное"
 						Name="DeleteVibrannoe"
 						IsVisible="True"
@@ -187,7 +203,7 @@
 				<Button Content="Выход"
 						Click="Exit_ButtonClick"
 						FontSize="20"
-						Margin="424 0 0 0"
+						Margin="200 0 0 0"
 						Background="White"
 						CornerRadius="20"
 						Foreground="#f7004d"/>
