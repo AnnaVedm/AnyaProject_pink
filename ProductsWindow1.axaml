@@ -72,6 +72,14 @@
 						  ItemsSource="{Binding ItemsList}">
 					<ComboBoxItem>Все производители</ComboBoxItem>
 				</ComboBox>
+				<TextBox CornerRadius="20"
+						 TextChanged=""
+						 x:Name="Search"
+						 Margin="10"
+						 Width="340"
+						 Height="30"
+						 Watermark="Начните искать..."
+						 />
 			</StackPanel>
 			
 

@@ -36,14 +36,13 @@ namespace AnyaProject
         public ProductsWindow1(User currentUser, List<Product> productslist)
         {
             ProductsList = productslist;
-
             DataContext = this;
             _currentUser = currentUser; // Инициализация _currentUser
             InitializeComponent(); // Инициализация компонентов
 
             queenStatus.Text = "Статус: " + _currentUser.UserStatus;
             queenName.Text = "Имя: " + _currentUser.UserName;
-
+            Search.TextChanged += SearchTextBox_TextChanged;
             ProductsList.Add(
                new Product()
                {
@@ -258,6 +257,33 @@ namespace AnyaProject
         {
             Korzina basket = new Korzina(_currentUser);
             basket.Show();
+        }
+        private void SearchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = Search.Text.ToLower(); // Получаем введенный текст и приводим его к нижнему регистру
+
+            // Разбиваем введенный текст на отдельные слова
+            string[] searchWords = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (string.IsNullOrWhiteSpace(searchText)) // Проверяем, пуст ли TextBox
+            {
+                // Если TextBox пуст, отображаем все товары
+                UpdateListBox(ProductsList);
+            }
+            else
+            {
+                // В противном случае, выполняем поиск и отображаем отфильтрованные товары
+                searchWords = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var filteredProducts = ProductsList.Where(product =>
+                    searchWords.Any(word =>
+                        product.TovarName.ToLower().Contains(word) ||
+                        product.Manufacturer.ToLower().Contains(word) ||
+                        product.Description.ToLower().Contains(word)
+                    )
+                ).ToList();
+                filteredProducts = filteredProducts.Distinct().ToList();
+                UpdateListBox(filteredProducts);
+            }
         }
     }
 }
