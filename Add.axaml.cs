@@ -45,11 +45,14 @@ namespace AnyaProject
             //_listupdate.UpdateItemsList(product.Manufacturer);
 
 
-
             _listupdate.UpdateProductsList(product);
+            product.tovarsVisibility = true;
             //ProductsWindow1 productsWindow1 = new ProductsWindow1(_user, tovars2);
             //productsWindow1.Show();
-
+            //foreach (var product in ProductsList)
+            //{
+            //    product.AddVKorzinuVisibility = true;
+            //}
             this.Close();
         }
     }

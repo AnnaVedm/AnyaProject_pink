@@ -96,6 +96,7 @@ namespace AnyaProject
             //-------------------------------------------
 
             // Добавляем элемент в список
+
             Button addProductButton = this.FindControl<Button>("DobavitTovar");
             if (_currentUser.UserStatus != "Queen")
             {
@@ -109,6 +110,10 @@ namespace AnyaProject
             else
             {
                 addProductButton.IsVisible = true;
+            }
+            foreach (var product in ProductsList)
+            {
+                product.AddVKorzinuVisibility = true;
             }
         }
 
@@ -154,6 +159,7 @@ namespace AnyaProject
         {
             ProductsList.Add(newProduct);
             newProduct.Otobrazhenie = _currentUser.UserStatus == "Queen";
+            newProduct.AddVKorzinuVisibility = _currentUser.UserStatus == "Queen";
 
             if (newProduct.Stock == 0)
             {

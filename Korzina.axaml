@@ -96,8 +96,9 @@
 							</Grid>
 						</StackPanel>
 							<Button Content="Удалить" Margin="0 10 10 0"
+									Click="dropiskorzina"
 									Background="#f7004d"
-									IsVisible="{Binding Otobrazhenie}"
+									IsVisible="{Binding AddVKorzinuVisibility}"
 									CornerRadius="20"
 									Foreground="White"/>
 						</StackPanel>

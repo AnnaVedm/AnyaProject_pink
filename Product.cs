@@ -15,6 +15,7 @@ namespace AnyaProject
         private string _manufacturer;
         private string _description;
         private double _price;
+        private bool _AddVKorzinuVisibility;
         private int _stock;
         private string _tovarImagePath;
 
@@ -33,6 +34,19 @@ namespace AnyaProject
                 }
             }
         }
+        public bool AddVKorzinuVisibility
+        {
+            get { return _AddVKorzinuVisibility; }
+            set
+            {
+                if (_AddVKorzinuVisibility != value)
+                {
+                    _AddVKorzinuVisibility = value;
+                    OnPropertyChanged("AddVKorzinuVisibility");
+                }
+            }
+        }
+
         public bool Otobrazhenie
         {
             get { return otobrazhenie; }
