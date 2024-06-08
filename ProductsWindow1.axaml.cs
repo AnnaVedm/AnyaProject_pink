@@ -126,7 +126,7 @@ namespace AnyaProject
             {
                 Message message = new Message();
 
-                message.oshibka1.Text = "Вы не можете удалить товар, ";
+                message.oshibka1.Text = "Ошибка!!! Вы не можете удалить товар из ассортимента, т.к он присутствует в корзине у пользователя!";
 
                 message.Show();
             }
@@ -232,7 +232,7 @@ namespace AnyaProject
             if (product.Stock == 0)
             {
                 Message message = new Message();
-                message.oshibka1.Text = "Вы не можете добавить в корзину товар,";
+                message.oshibka1.Text = "ОШИБКА!!! Вы не можете добавить в корзину товар, которого нет на складе!!";
 
                 message.Show();
             }

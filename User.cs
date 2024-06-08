@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -53,6 +54,31 @@ namespace AnyaProject
                 }
             }
         }
+
+        public static ObservableCollection<User> Users { get; set; } = new ObservableCollection<User>()
+        {
+            new User()
+            {
+                UserName = "Отсутствует",
+                UserPassword = "",
+                UserStatus = "Гость"
+            },
+
+            new User()
+            {
+                UserName = "AnnaVedm",
+                UserPassword = "1234",
+                UserStatus = "Queen"
+            },
+
+            new User()
+            {
+                UserName = "Anna",
+                UserPassword = "1234",
+                UserStatus = "Thief"
+            }
+        };
+
         public List<Product> Products { get; set; } = new List<Product>();
         public event PropertyChangedEventHandler PropertyChanged;
 

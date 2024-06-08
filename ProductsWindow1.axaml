@@ -34,9 +34,11 @@
 			<!-- Поля: Имя пользователя и Статус -->
 			<StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
 				<TextBlock Name="queenName"
+						   Foreground="White"
 						   HorizontalAlignment="Left"/>
 				<TextBlock Name="queenStatus"
-						   HorizontalAlignment="Right"/>
+						   Foreground="White"
+						   Margin="20 0 0 0"/>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal"
